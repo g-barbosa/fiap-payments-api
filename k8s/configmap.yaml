@@ -1,0 +1,21 @@
+# ConfigMap para a Payments API
+# Armazena configurações NÃO sensíveis
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payments-api-config
+  namespace: fiap-cloud-games
+  labels:
+    app.kubernetes.io/name: payments-api
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: fiap-cloud-games
+data:
+  ASPNETCORE_ENVIRONMENT: "Production"
+  ASPNETCORE_URLS: "http://+:8080"
+  TZ: "America/Sao_Paulo"
+  Logging__LogLevel__Default: "Information"
+  Logging__LogLevel__Microsoft.AspNetCore: "Warning"
+  
+  # RabbitMQ - Configurações não sensíveis
+  RabbitMq__Host: "rabbitmq"
+  RabbitMq__Port: "5672"

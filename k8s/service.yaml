@@ -1,0 +1,18 @@
+# Service para a Payments API
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments-api
+  namespace: fiap-cloud-games
+  labels:
+    app.kubernetes.io/name: payments-api
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: fiap-cloud-games
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8080
+      name: http
+  selector:
+    app: payments-api
