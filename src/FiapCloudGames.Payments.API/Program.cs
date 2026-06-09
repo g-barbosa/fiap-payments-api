@@ -12,7 +12,16 @@ namespace FiapCloudGames.Payments.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "FIAP Cloud Games API - API de Pagamentos"
+                });
+            });
+
+            builder.Services.AddHealthChecks();
 
             var app = builder.Build();
 
@@ -29,6 +38,8 @@ namespace FiapCloudGames.Payments.API
 
 
             app.MapControllers();
+
+            app.MapHealthChecks("/health");
 
             app.Run();
         }
