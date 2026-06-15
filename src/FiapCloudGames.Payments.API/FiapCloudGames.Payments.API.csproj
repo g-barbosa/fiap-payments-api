@@ -10,4 +10,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FiapCloudGames.Payments.Domain\FiapCloudGames.Payments.Domain.csproj" />
+    <ProjectReference Include="..\FiapCloudGames.Payments.Infrastructure\FiapCloudGames.Payments.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
