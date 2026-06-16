@@ -6,11 +6,13 @@ COPY src/FiapCloudGames.Payments.API/FiapCloudGames.Payments.API.sln ./FiapCloud
 COPY src/FiapCloudGames.Payments.API/FiapCloudGames.Payments.API.csproj ./FiapCloudGames.Payments.API/
 COPY src/FiapCloudGames.Payments.Application/FiapCloudGames.Payments.Application.csproj ./FiapCloudGames.Payments.Application/
 COPY src/FiapCloudGames.Payments.Infrastructure/FiapCloudGames.Payments.Infrastructure.csproj ./FiapCloudGames.Payments.Infrastructure/
+COPY src/FiapCloudGames.Payments.Domain/FiapCloudGames.Payments.Domain.csproj ./FiapCloudGames.Payments.Domain/
 RUN dotnet restore ./FiapCloudGames.Payments.API/FiapCloudGames.Payments.API.sln
 
 COPY src/FiapCloudGames.Payments.API/ ./FiapCloudGames.Payments.API/
 COPY src/FiapCloudGames.Payments.Application/ ./FiapCloudGames.Payments.Application/
 COPY src/FiapCloudGames.Payments.Infrastructure/ ./FiapCloudGames.Payments.Infrastructure/
+COPY src/FiapCloudGames.Payments.Domain/ ./FiapCloudGames.Payments.Domain/
 
 WORKDIR /src/FiapCloudGames.Payments.API
 RUN dotnet build FiapCloudGames.Payments.API.csproj -c Release
