@@ -21,7 +21,9 @@ namespace FiapCloudGames.Payments.Application.Services
                 NomeUsuario = evento.NomeUsuario,
                 Email = evento.Email,
                 Valor = evento.Valor,
-                Status = status
+                Status = status,
+                IdJogo = evento.IdJogo,
+                IdBiblioteca = evento.IdBiblioteca
             });
         }
     }
