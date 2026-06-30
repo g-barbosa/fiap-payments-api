@@ -28,10 +28,10 @@ namespace FiapCloudGames.Payments.Infrastructure.Messaging.Publishers
 
             var channel = await connection.CreateChannelAsync();
 
-            await channel.QueueDeclareAsync(
-                queue: "pagamento-processado",
+            await channel.ExchangeDeclareAsync(
+                exchange: "pagamento-processado",
+                type: ExchangeType.Fanout,
                 durable: true,
-                exclusive: false,
                 autoDelete: false);
 
             var payload = JsonSerializer.Serialize(evento);
@@ -44,8 +44,8 @@ namespace FiapCloudGames.Payments.Infrastructure.Messaging.Publishers
             };
 
             await channel.BasicPublishAsync(
-                exchange: "",
-                routingKey: "pagamento-processado",
+                exchange: "pagamento-processado",
+                routingKey: "",
                 mandatory: false,
                 basicProperties: properties,
                 body: body);

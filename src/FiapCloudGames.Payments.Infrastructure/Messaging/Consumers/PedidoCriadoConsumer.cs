@@ -59,7 +59,7 @@ namespace FiapCloudGames.Payments.Infrastructure.Messaging.Consumers
                 await handler.Processar(evento);
             };
 
-            await channel.BasicConsumeAsync(queue: "usuario-criado", autoAck: true, consumer: consumer);
+            await channel.BasicConsumeAsync(queue: "pedido-criado", autoAck: true, consumer: consumer);
         }
     }
 }
