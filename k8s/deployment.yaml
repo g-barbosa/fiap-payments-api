@@ -38,6 +38,22 @@ spec:
             # Carrega configurações não sensíveis do ConfigMap
             - configMapRef:
                 name: payments-api-config
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
             # Carrega dados sensíveis do Secret
             - secretRef:
                 name: payments-api-secrets

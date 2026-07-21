@@ -1,8 +1,10 @@
 
+using FiapCloudGames.Payments.API.Middleware;
 using FiapCloudGames.Payments.Application.Services;
 using FiapCloudGames.Payments.Domain.Interfaces.Messaging;
 using FiapCloudGames.Payments.Infrastructure.Messaging.Consumers;
 using FiapCloudGames.Payments.Infrastructure.Messaging.Publishers;
+using Serilog;
 
 namespace FiapCloudGames.Payments.API
 {
@@ -11,6 +13,18 @@ namespace FiapCloudGames.Payments.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(builder.Configuration)
+                .Enrich.FromLogContext()
+                .CreateLogger();
+
+            builder.Host.UseSerilog((context, services, loggerConfiguration) =>
+            {
+                loggerConfiguration
+                    .ReadFrom.Configuration(context.Configuration)
+                    .Enrich.FromLogContext();
+            });
 
             // Add services to the container.
 
@@ -26,6 +40,10 @@ namespace FiapCloudGames.Payments.API
                 });
             });
 
+            var rabbitMqHost = builder.Configuration["RabbitMq:Host"] ?? "rabbitmq";
+            var rabbitMqPort = int.Parse(builder.Configuration["RabbitMq:Port"] ?? "5672");
+            var rabbitMqUri = new Uri($"amqp://admin:rabbitmq123@{rabbitMqHost}:{rabbitMqPort}/");
+
             builder.Services.AddHealthChecks();
 
             builder.Services.AddScoped<IPagamentoProcessadoPublisher, RabbitMqPagamentoPublisher>();
@@ -37,10 +55,12 @@ namespace FiapCloudGames.Payments.API
             app.UseSwagger();
             app.UseSwaggerUI();
 
+            app.UseMiddleware<CorrelationIdMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
