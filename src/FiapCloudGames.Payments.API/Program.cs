@@ -5,6 +5,7 @@ using FiapCloudGames.Payments.Domain.Interfaces.Messaging;
 using FiapCloudGames.Payments.Infrastructure.Messaging.Consumers;
 using FiapCloudGames.Payments.Infrastructure.Messaging.Publishers;
 using Serilog;
+using Prometheus;
 
 namespace FiapCloudGames.Payments.API
 {
@@ -58,6 +59,7 @@ namespace FiapCloudGames.Payments.API
             app.UseMiddleware<CorrelationIdMiddleware>();
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
+            app.UseHttpMetrics();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
@@ -65,6 +67,7 @@ namespace FiapCloudGames.Payments.API
             app.MapControllers();
 
             app.MapHealthChecks("/health");
+            app.MapMetrics();
 
             app.Run();
         }
