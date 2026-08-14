@@ -1,7 +1,9 @@
 
 using FiapCloudGames.Payments.API.Middleware;
+using FiapCloudGames.Payments.Application.Interfaces;
 using FiapCloudGames.Payments.Application.Services;
 using FiapCloudGames.Payments.Domain.Interfaces.Messaging;
+using FiapCloudGames.Payments.Infrastructure.Caching;
 using FiapCloudGames.Payments.Infrastructure.Messaging.Consumers;
 using FiapCloudGames.Payments.Infrastructure.Messaging.Publishers;
 using Serilog;
@@ -47,6 +49,21 @@ namespace FiapCloudGames.Payments.API
 
             builder.Services.AddHealthChecks();
 
+            var redisConnection = builder.Configuration.GetConnectionString("Redis");
+            if (!string.IsNullOrWhiteSpace(redisConnection))
+            {
+                builder.Services.AddStackExchangeRedisCache(options =>
+                {
+                    options.Configuration = redisConnection;
+                    options.InstanceName = "fiap-payments:";
+                });
+            }
+            else
+            {
+                builder.Services.AddDistributedMemoryCache();
+            }
+
+            builder.Services.AddScoped<ITransacaoPagamentoCache, RedisTransacaoPagamentoCache>();
             builder.Services.AddScoped<IPagamentoProcessadoPublisher, RabbitMqPagamentoPublisher>();
             builder.Services.AddScoped<ProcessarPagamentoService>();
             builder.Services.AddHostedService<PedidoCriadoConsumer>();
