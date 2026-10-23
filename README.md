@@ -55,7 +55,7 @@ src/
 | `RabbitMq__Host` | Host do servidor RabbitMQ | `rabbitmq` | Não |
 | `RabbitMq__Port` | Porta do servidor RabbitMQ | `5672` | Não |
 | `RabbitMq__Username` | Usuário de conexão | `admin` | ⚠️ Sim |
-| `RabbitMq__Password` | Senha de conexão | `rabbitmq123` | ⚠️ Sim |
+| `RabbitMq__Password` | Senha de conexão | `<senha do Key Vault>` | ⚠️ Sim |
 
 > ⚠️ **Importante**: Em produção, utilize um gerenciador de secrets (Azure Key Vault, AWS Secrets Manager, HashiCorp Vault) para armazenar credenciais sensíveis.
 
@@ -88,7 +88,7 @@ docker run -d \
   -p 8080:8080 \
   -e RabbitMq__Host=rabbitmq \
   -e RabbitMq__Username=admin \
-  -e RabbitMq__Password=rabbitmq123 \
+  -e RabbitMq__Password=<senha do Key Vault> \
   --name payments-api \
   fiap-payments-api
 ```
